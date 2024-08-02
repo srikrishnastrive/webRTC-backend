@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "format": "prettier --write 'src/**/*.ts'",
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "watch": "tsc -w",
+    "start": "nodemon .",
+    "dev": "concurrently --kill-others \"npm run watch\" \"npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "prettier": "^3.3.3",
+    "tslint": "^5.20.1",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
