@@ -36,6 +36,15 @@ const roomHandler = (socket: Socket) => {
             //add the peerId to the key of the room Id
             rooms[roomId].push(peerId);
             socket.join(roomId) //make th user joined the socker room.
+
+            //whenever anyone joins the room
+            socket.on("ready",()=>{
+                //from the fronted we are emitting a user whenever a new 
+                //user joins
+                //then from our server we are all emiting to the all members
+                //in the room
+                socket.to(roomId).emit("user-joined",{peerId})
+            })
             
             //below event is for logging purpose
             socket.emit("get-users",{
