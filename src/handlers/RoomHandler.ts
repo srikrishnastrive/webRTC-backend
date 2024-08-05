@@ -1,17 +1,24 @@
 import { Socket } from "socket.io";
 import {v4 as UUIDv4} from "uuid";
-import IRoomParams from "../interfaces/iRoomParams";
+import IRoomParams from "../interfaces/IRoomParams";
 
-const roomHandler = (socket: Socket) => {
-    /**
+
+
+/**
      * {1: {u1,u2,u3}}
      * {2 :{u5,u5,u6}}
      */
-    const rooms : Record<string,string[]> = {};
+const rooms : Record<string,string[]> = {};
+
+const roomHandler = (socket: Socket) => {
+    
     const createRoom = () => {
         const roomId = UUIDv4();
         // this will create the uniqure roomId for multiple connection will exachnage inforamtion
         socket.join(roomId);
+
+        rooms[roomId] = []; //create the new entry a new room.
+
         // we will make a socket connection while entering in a romm
         socket.emit("room-created", {roomId});
         // we will emit an event from server side that socket connected successfully
@@ -28,7 +35,13 @@ const roomHandler = (socket: Socket) => {
             //the moment new user joins, 
             //add the peerId to the key of the room Id
             rooms[roomId].push(peerId);
-            socket.join(roomId) //make th u
+            socket.join(roomId) //make th user joined the socker room.
+            
+            //below event is for logging purpose
+            socket.emit("get-users",{
+                roomId,
+                participants: rooms[roomId]
+            })
             
         }
         
